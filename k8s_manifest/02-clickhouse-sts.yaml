@@ -21,6 +21,10 @@ spec:
       containers:
       - name: clickhouse
         image: clickhouse/clickhouse-server:24.2.1.2248
+        resources:
+          requests:
+            memory: "1024Mi"
+            cpu: "1000m"
         env:
         - name: CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT
           value: "1"

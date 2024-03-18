@@ -15,6 +15,10 @@ spec:
           - name: sysdig-vm-import-job
             image: ghcr.io/andrewd-sysdig/sysdig-vm-importer:2
             imagePullPolicy: IfNotPresent
+            resources:
+              requests:
+                memory: "2048Mi" # Memory used by this job seems to peak at twice the size of the uncompressed CSV file
+                cpu: "1000m"
             env:
             - name: BATCH_SIZE
               value: "100000"
