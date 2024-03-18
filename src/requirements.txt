@@ -1,0 +1,4 @@
+requests
+clickhouse_connect
+xxhash
+pandas

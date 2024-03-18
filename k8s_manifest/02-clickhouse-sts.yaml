@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: clickhouse
+  namespace: sysdig-vm-reporting
+spec:
+  serviceName: "clickhouse"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: clickhouse
+  template:
+    metadata:
+      labels:
+        app: clickhouse
+    spec:
+      securityContext:
+        runAsUser: 10000
+        runAsGroup: 10000
+        fsGroup: 10000
+      containers:
+      - name: clickhouse
+        image: clickhouse/clickhouse-server:24.2.1.2248
+        env:
+        - name: CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT
+          value: "1"
+        - name: CLICKHOUSE_USER
+          value: "sysdig_vm_user"
+        - name: CLICKHOUSE_PASSWORD
+          valueFrom:
+                secretKeyRef:
+                  name: clickhouse-password
+                  key: CLICKHOUSE_PASSWORD
+        ports:
+        - containerPort: 8123
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/clickhouse/
+        securityContext:
+          allowPrivilegeEscalation: false
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 100Gi

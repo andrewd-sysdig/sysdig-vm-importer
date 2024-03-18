@@ -1,0 +1,15 @@
+apiVersion: v1
+data:
+  CLICKHOUSE_PASSWORD: c2VjcmV0cGFzc3dvcmQxMjM=
+kind: Secret
+metadata:
+  name: clickhouse-password
+  namespace: sysdig-vm-reporting
+---
+apiVersion: v1
+data:
+  SYSDIG_SECURE_API_TOKEN: UkVQTEFDRV9NRV9XSVRIX1lPVVJfVE9LRU4=
+kind: Secret
+metadata:
+  name: sysdig-secure-api-token
+  namespace: sysdig-vm-reporting
