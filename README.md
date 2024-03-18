@@ -57,7 +57,7 @@ kubectl apply -f k8s_manifest/09-clickhouse-svc-lb.yaml
 
 You will need to install the ClickHouse data source for grafana plugin which you can find [here](https://grafana.com/grafana/plugins/grafana-clickhouse-datasource/)
 
-You can then import the Grafana dashboards in the (grafana_dashbaords)[grafana_dashboards/] directory.
+You can then import the Grafana dashboards in the [grafana_dashbaords](grafana_dashboards/) directory.
 
 ## Usage
 
