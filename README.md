@@ -57,7 +57,7 @@ kubectl apply -f k8s_manifest/09-clickhouse-svc-lb.yaml
 
 You will need to install the ClickHouse data source for grafana plugin which you can find [here](https://grafana.com/grafana/plugins/grafana-clickhouse-datasource/)
 
-You can then import the Grafana dashboards in the [grafana_dashbaords](grafana_dashboards/) directory.
+You can then import the Grafana dashboards in the [grafana_dashboards](grafana_dashboards/) directory.
 
 ## Usage
 
@@ -76,6 +76,6 @@ kubectl create job --from=cronjob/sysdig-vm-import-job sysdig-vm-import-job-back
 ## Notes
 * It tracks vulnerabilities per workload, ignoring the image that is associated to the workload.
 * The fields used to track the unique vuln per workload considers the following columns from the Vuln Report: 'Vulnerability ID', 'Severity', 'Package name', 'Package version', 'K8S cluster name', 'K8S namespace name', 'K8S workload type', 'K8S workload name', 'K8S container name', 'Package path'
-* It calulates what is fixed (or new) by getting a list of unique vulnerabilities per workload on the From Date, and the To Date, then comparing them.
+* It calculates what is fixed (or new) by getting a list of unique vulnerabilities per workload on the From Date, and the To Date, then comparing them.
 * If a workload no longer exists (ie it has been deleted) then it will be considered a fixed vulnerability.
-* Cronjobs/Jobs that run less than once a day may make it look like vulnerabilites are fixed or new again depending on your From and To Date
+* Cronjobs/Jobs that run less than once a day may make it look like vulnerabilities are fixed or new again depending on your From and To Date
