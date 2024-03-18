@@ -13,7 +13,7 @@ spec:
         spec:
           containers:
           - name: sysdig-vm-import-job
-            image: ghcr.io/andrewd-sysdig/sysdig-vm-importer:1
+            image: ghcr.io/andrewd-sysdig/sysdig-vm-importer:2
             imagePullPolicy: IfNotPresent
             env:
             - name: BATCH_SIZE
