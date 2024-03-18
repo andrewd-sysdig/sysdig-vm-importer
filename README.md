@@ -70,7 +70,7 @@ You will need to copy the Report Schedule ID from the URL for this report you co
 Once everything is deployed you can run a once off job to backfill the last 14 days of data from your Sysdig Vulnerability Report (assuming it has been running for the last 14 days). Below is an example command on how you can do that
 
 ```sh
-kubectl create job --from=cronjob/sysdig-vm-import-job sysdig-vm-import-job-backfill --dry-run=client -o yaml | kubectl patch --dry-run=client -o yaml --type json --patch '[{ "op": "replace", "path": "/spec/template/spec/containers/0/command", "value": ["python3", "/app/import_sysdig_vulns.py", "all"] }]' -f - | kubectl apply -f -
+kubectl -n sysdig-vm-reporting create job --from=cronjob/sysdig-vm-import-job sysdig-vm-import-job-backfill --dry-run=client -o yaml | kubectl patch --dry-run=client -o yaml --type json --patch '[{ "op": "replace", "path": "/spec/template/spec/containers/0/command", "value": ["python3", "/app/import_sysdig_vulns.py", "all"] }]' -f - | kubectl apply -f -
 ```
 
 ## Notes
