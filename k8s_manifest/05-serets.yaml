@@ -8,7 +8,7 @@ metadata:
 ---
 apiVersion: v1
 data:
-  SYSDIG_SECURE_API_TOKEN: UkVQTEFDRV9NRV9XSVRIX1lPVVJfVE9LRU4=
+  SYSDIG_SECURE_API_TOKEN: bmV2ZXJfZ29ubmFfZ2l2ZV95b3VfdXA=
 kind: Secret
 metadata:
   name: sysdig-secure-api-token
