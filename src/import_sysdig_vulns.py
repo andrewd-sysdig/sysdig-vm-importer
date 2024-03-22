@@ -2,7 +2,7 @@ import requests
 import gzip
 import os
 import logging
-from datetime import datetime, date, timedelta
+from datetime import datetime, date
 import xxhash
 import sys
 import clickhouse_connect
@@ -60,9 +60,9 @@ else:
 
 if len(sys.argv) < 2:
     logging.error(f"Missing Parameter. Usage is: python3 import_sysdig_vulns.py [all|0|1|2]")
-    logging.error(f"Where all means download all available reports and 0 means download todays, 1 is 1 day ago etc...")
+    logging.error(f"Where all means download all available reports and 0 means download the most recent, 1 day before the most recent etc...")
     logging.error(f"Example #1, to download all reports available: python3 import_sysdig_vulns.py all")
-    logging.error(f"Example #2, to download todays report: python3 import_sysdig_vulns.py 0")
+    logging.error(f"Example #2, to download the most recent report: python3 import_sysdig_vulns.py 0")
     exit(0)
 
 headers = {
@@ -194,16 +194,16 @@ def main():
 
     # If this is run with the argument all, then download all daily reports available for last 14 days and load them to the DB
     if sys.argv[1] == "all":
-        logging.info(f"Importing 14 days of data...")
+        logging.info(f"Importing All data available for report schedule...")
         for report in reports_available:
             logging.info(f"Processing Report: {report['id']} from {report['completedAt']}")
             url = SYSDIG_REGION_URL + '/api/scanning/reporting/v2/schedules/' + REPORT_SCHEDULE_ID + '/reports/' + report['id'] + '/download'
             response = requests.get(url, headers=headers)
             if response.status_code==200:
                 logging.info(f"Got Report Download Link, calculating report_date...")
-                report_date = report['completedAt']
-                dt_object = datetime.strptime(report_date, '%Y-%m-%dT%H:%M:%S.%fZ')
-                report_date = (dt_object + timedelta(days=1)).date()
+                report_complete_time = report['completedAt']
+                report_date = datetime.strptime(report_complete_time, '%Y-%m-%dT%H:%M:%S.%fZ').date()
+                #report_date = (dt_object + timedelta(days=1)).date()
                 logging.info(f"Calling Download Report with {report_date}")
                 download_report(response.url, report_date)
                 logging.info(f"Import Complete...")
@@ -216,10 +216,10 @@ def main():
         url = SYSDIG_REGION_URL + '/api/scanning/reporting/v2/schedules/' + REPORT_SCHEDULE_ID + '/reports/' + reports_available[report_to_download]['id'] + '/download'
         response = requests.get(url, headers=headers)
         if response.status_code==200:
-            logging.info(f"Got Report Download Link, calculating report_date...")
-            report_date = reports_available[report_to_download]['completedAt']
-            dt_object = datetime.strptime(report_date, '%Y-%m-%dT%H:%M:%S.%fZ')
-            report_date = (dt_object + timedelta(days=1)).date()
+            logging.info(f"Report Downloaded, calculating report_date...")
+            report_complete_time = reports_available[report_to_download]['completedAt']
+            report_date = datetime.strptime(report_complete_time, '%Y-%m-%dT%H:%M:%S.%fZ').date()
+            #report_date = (dt_object + timedelta(days=1)).date()
             #logging.info("Formatting the report date to YYYY-MM-DD...")
             #report_date = dt_object_plus_one_day.strftime('%Y-%m-%d')
             logging.info(f"Calling Download Report with {report_date}")

@@ -6,14 +6,14 @@ metadata:
   namespace: sysdig-vm-reporting
 spec:
   timeZone: 'Australia/Sydney' 
-  schedule: "CRON_TZ=Australia/Sydney 30 9 * * *" # CRON_TZ for 1.24 or lower, not officially supported. Remove if on 1.25+
+  schedule: "CRON_TZ=Australia/Sydney 30 0 * * *" # CRON_TZ for 1.24 or lower, not officially supported. Remove if on 1.25+
   jobTemplate:
     spec:
       template:
         spec:
           containers:
           - name: sysdig-vm-import-job
-            image: ghcr.io/andrewd-sysdig/sysdig-vm-importer:2
+            image: ghcr.io/andrewd-sysdig/sysdig-vm-importer:latest # You may want to update this to pin it to a version
             imagePullPolicy: IfNotPresent
             resources:
               requests:
@@ -21,7 +21,7 @@ spec:
                 cpu: "1000m"
             env:
             - name: BATCH_SIZE
-              value: "100000"
+              value: "100000" # You shouldn't need to change this
             - name: REPORT_SCHEDULE_ID
               value: "2H3Sl0FjEkIocMkVAIfq6CFRSD6" # Report Schedule ID comes from Sysdig UI, click your "All Vulnerabilities" report and grab the Schedule ID from the URL bar
             - name: SYSDIG_SECURE_API_TOKEN
@@ -32,11 +32,11 @@ spec:
             - name: SYSDIG_REGION_URL
               value: "https://app.au1.sysdig.com" # Your Sysdig Region URL
             - name: ALL_VULNS_TABLE_NAME
-              value: "all_vulns" # Name of the table to use in clickhouse to store the vulnerability data
+              value: "all_vulns" # Name of the table to use in clickhouse to store the vulnerability data (You shouldn't need to change this)
             - name: CLICKHOUSE_HOSTNAME
               value: "clickhouse" # Only need to change if you change the cluster IP svc name
             - name: CLICKHOUSE_USER
-              value: "sysdig_vm_user" # Username for Clickhouse DB
+              value: "sysdig_vm_user" # Username for Clickhouse DB (You shouldn't need to change this)
             - name: CLICKHOUSE_PASSWORD
               valueFrom:
                 secretKeyRef:

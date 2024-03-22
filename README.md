@@ -39,7 +39,6 @@ You will need to modify these as appropriate for your environment. Specifically
 2. You will need to set the correct REPORT_SCHEDULE_ID for your All Vulnerabilities report you have configured in `04-cronjob.yaml` See [Usage](#usage) section below
 3. You will need to set the correct SYSDIG_REGION_URL to your Sysdig URL in `04-cronjob.yaml`
 4. You will need to set your SYSDIG_SECURE_API_TOKEN in `05-secrets.yaml`
-5. You will need to configure the cron schedule to run 15minutes after your Sysdig Vulnerability Report is due to run in `04-cronjob.yaml`
 
 ```sh
 kubectl apply -f k8s_manifest/01-namespace.yaml
@@ -61,7 +60,8 @@ You can then import the Grafana dashboards in the [grafana_dashboards](grafana_d
 
 ## Usage
 
-Make sure you have a Sysdig Vulnerability Report configured to run daily for all vulnerabilities in CSV and compressed in GZ format.
+You must have a Sysdig Runtime Vulnerability Report configured to run daily at midnight for all vulnerabilities in CSV and compressed in GZ format.
+> Note: *Do not* use the Generate Now button in this report as this will cause issues with counting vulnerabilities multiple times. It is important the report only runs once a day at midnight. 
 
 ![Sysdig VM Report Example](img/sysdig_vm_report.png)
 
